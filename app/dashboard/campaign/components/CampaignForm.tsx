@@ -81,9 +81,21 @@ export default function CampaignForm({
 		<Form {...form}>
 			<form
 				onSubmit={form.handleSubmit(onSubmit)}
-				className="w-full border pb-5 rounded-md"
+				className="w-full pb-5 rounded-md"
 			>
-				<div className="border-b p-5 flex items-center sm:justify-between flex-wrap sm:flex-row gap-2">
+				<div className="flex items-center sm:justify-between flex-wrap sm:flex-row gap-2">
+					<div
+						className={cn(
+							isPreview
+							? "mx-auto w-full lg:w-4/5 "
+							: " w-1/2 lg:block hidden "
+						)}
+					>
+						<h1 className="text-3xl font-bold dark:text-gray-200">
+							{form.getValues().title ||
+							"Untitled campaign"}
+						</h1>
+					</div>
 					<div className="flex items-center flex-wrap gap-5">
 						<span
 							onClick={() => {
@@ -138,29 +150,19 @@ export default function CampaignForm({
 												: "divide-x"
 										)}
 									>
-										<Input
-											placeholder="Campaign title"
-											{...field}
-											autoFocus
-											className={cn(
-												"border-none text-lg font-medium leading-relaxed focus:ring-1 ring-green-500",
-												isPreview
-													? "w-0 p-0"
-													: "w-full lg:w-1/2"
-											)}
-										/>
-										<div
-											className={cn(
-												"lg:px-10",
-												isPreview
-													? "mx-auto w-full lg:w-4/5 "
-													: " w-1/2 lg:block hidden "
-											)}
-										>
-											<h1 className="text-3xl font-bold dark:text-gray-200">
-												{form.getValues().title ||
-													"Untitled campaign"}
-											</h1>
+										<div className="w-full">
+											<label>Title</label>
+											<Input
+												placeholder="Campaign title"
+												{...field}
+												autoFocus
+												className={cn(
+													"border-none text-lg font-medium leading-relaxed focus:ring-1 ring-green-500",
+													isPreview
+														? "w-0 p-0"
+														: "w-full lg:w-1/2"
+												)}
+											/>
 										</div>
 									</div>
 								</>
