@@ -81,9 +81,9 @@ export default function CampaignForm({
 		<Form {...form}>
 			<form
 				onSubmit={form.handleSubmit(onSubmit)}
-				className="w-full pb-5 rounded-md"
+				className="w-4/6 justify-center items-center pb-5 rounded-md"
 			>
-				<div className="flex items-center sm:justify-between flex-wrap sm:flex-row gap-2">
+				<div className="flex items-center p-2 sm:justify-between flex-wrap sm:flex-row gap-2">
 					<div
 						className={cn(
 							isPreview
@@ -92,33 +92,25 @@ export default function CampaignForm({
 						)}
 					>
 						<h1 className="text-3xl font-bold dark:text-gray-200">
-							{form.getValues().title ||
-							"Untitled campaign"}
+							Edit Campaign 
 						</h1>
 					</div>
 					<div className="flex items-center flex-wrap gap-5">
 						<span
 							onClick={() => {
-								setPreivew(
-									!isPreview &&
-										!form.getFieldState("image_url").invalid
-								);
+								// setPreivew(
+								// 	!isPreview &&
+								// 		!form.getFieldState("image_url").invalid
+								// );
 							}}
 							role="button"
 							tabIndex={0}
 							className="flex gap-2 items-center border px-3 py-2 rounded-md hover:border-zinc-400 transition-all bg-zinc-800 text-sm"
 						>
-							{!isPreview ? (
 								<>
 									<EyeOpenIcon />
-									Preivew
+									View
 								</>
-							) : (
-								<>
-									<Pencil1Icon />
-									Edit
-								</>
-							)}
 						</span>
 					</div>
 
@@ -144,23 +136,17 @@ export default function CampaignForm({
 								<>
 									<div
 										className={cn(
-											"w-full flex break-words p-2 gap-2",
-											isPreview
-												? "divide-x-0"
-												: "divide-x"
+											"w-full flex break-words p-2 gap-2 divide-x",
 										)}
 									>
 										<div className="w-full">
-											<label>Title</label>
+											<FormLabel>Title</FormLabel>
 											<Input
 												placeholder="Campaign title"
 												{...field}
 												autoFocus
 												className={cn(
-													"border-none text-lg font-medium leading-relaxed focus:ring-1 ring-green-500",
-													isPreview
-														? "w-0 p-0"
-														: "w-full lg:w-1/2"
+													"border-none text-lg font-medium leading-relaxed focus:ring-1 ring-green-500 w-full",
 												)}
 											/>
 										</div>
@@ -180,6 +166,36 @@ export default function CampaignForm({
 
 				<FormField
 					control={form.control}
+					name="content"
+					render={({ field }) => (
+						<FormItem>
+							<FormControl>
+								<div
+									className={cn(
+										"w-full flex p-2 divide-x-0",
+									)}
+								>	
+									<div className="w-full">
+										<FormLabel>Campaign content</FormLabel>
+										<Textarea
+											placeholder="Campaign content"
+											{...field}
+											className={cn(
+												"border-none text-lg font-medium leading-relaxed focus:ring-1 ring-gray-500  h-64 resize-none w-full",
+											)}
+										/>
+										</div>
+								</div>
+							</FormControl>
+
+							{form.getFieldState("content").invalid &&
+								form.getValues().content && <FormMessage />}
+						</FormItem>
+					)}
+				/>
+
+					<FormField
+					control={form.control}
 					name="image_url"
 					render={({ field }) => {
 						return (
@@ -187,49 +203,26 @@ export default function CampaignForm({
 								<FormControl>
 									<div
 										className={cn(
-											"w-full flex divide-x p-2 gap-2 items-center",
-											isPreview
-												? "divide-x-0"
-												: "divide-x"
+											"w-full flex-1 p-2 gap-2 items-center",
 										)}
 									>
-										<Input
-											placeholder="🔗 Image url"
-											{...field}
-											className={cn(
-												"border-none text-lg font-medium leading-relaxed focus:ring-1 ring-green-500 ",
-												isPreview
-													? "w-0 p-0"
-													: "w-full lg:w-1/2"
-											)}
-											type="url"
-										/>
+											<div className="w-full">
+											<FormLabel>Image Url</FormLabel>
+											<Input
+												placeholder="🔗 Image url"
+												{...field}
+												className={cn(
+													"border-none text-lg font-medium leading-relaxed focus:ring-1 ring-green-500 w-full lg:w-1/2 ",
+												)}
+												type="url"
+											/>
+										</div>
+
 										<div
 											className={cn(
-												" relative",
-												isPreview
-													? "px-0 mx-auto w-full lg:w-4/5 "
-													: "px-10 w-1/2 lg:block hidden"
+												"relative px-10 w-1/2 lg:block hidden",
 											)}
 										>
-											{isPreview ? (
-												<div className="w-full h-80 relative mt-10 border rounded-md">
-													<Image
-														src={
-															form.getValues()
-																.image_url
-														}
-														alt="preview"
-														fill
-														className=" object-cover object-center rounded-md"
-													/>
-												</div>
-											) : (
-												<p className="text-gray-400">
-													👆 click on preview to see
-													image
-												</p>
-											)}
 										</div>
 									</div>
 								</FormControl>
@@ -244,52 +237,6 @@ export default function CampaignForm({
 
 				<FormField
 					control={form.control}
-					name="content"
-					render={({ field }) => (
-						<FormItem>
-							<FormControl>
-								<div
-									className={cn(
-										"w-full flex p-2 gap-2 ",
-										!isPreview
-											? "divide-x h-70vh"
-											: "divide-x-0"
-									)}
-								>
-									<Textarea
-										placeholder="Campaign content"
-										{...field}
-										className={cn(
-											"border-none text-lg font-medium leading-relaxed focus:ring-1 ring-green-500  h-70vh resize-none",
-											isPreview
-												? "w-0 p-0"
-												: "w-full lg:w-1/2"
-										)}
-									/>
-									<div
-										className={cn(
-											"overflow-scroll h-full",
-											isPreview
-												? "mx-auto w-full lg:w-4/5 "
-												: "w-1/2 lg:block hidden"
-										)}
-									>
-										<MarkdownPreview
-											content={form.getValues().content}
-											className="lg:px-10"
-										/>
-									</div>
-								</div>
-							</FormControl>
-
-							{form.getFieldState("content").invalid &&
-								form.getValues().content && <FormMessage />}
-						</FormItem>
-					)}
-				/>
-
-				<FormField
-					control={form.control}
 					name="target_usd"
 					render={({ field }) => (
 						<FormItem>
@@ -297,34 +244,19 @@ export default function CampaignForm({
 								<>
 									<div
 										className={cn(
-											"w-full flex break-words p-2 gap-2",
-											isPreview
-												? "divide-x-0"
-												: "divide-x"
+											"w-full flex break-words p-2 gap-2 divide-x",
 										)}
 									>
+										<div className="w-full">
+										<FormLabel>Target Amount</FormLabel>
 										<Input
 											placeholder="Campaign Target $USD"
 											{...field}
 											autoFocus
 											className={cn(
-												"border-none text-lg font-medium leading-relaxed focus:ring-1 ring-green-500",
-												isPreview
-													? "w-0 p-0"
-													: "w-full lg:w-1/2"
+												"border-none text-lg font-medium leading-relaxed focus:ring-1 ring-green-500 w-full lg:w-1/2",
 											)}
 										/>
-										<div
-											className={cn(
-												"lg:px-10",
-												isPreview
-													? "mx-auto w-full lg:w-4/5 "
-													: " w-1/2 lg:block hidden "
-											)}
-										>
-											<h1 className="text-lg font-medium dark:text-gray-200">
-												{form.getValues().target_usd}
-											</h1>
 										</div>
 									</div>
 								</>
@@ -339,60 +271,45 @@ export default function CampaignForm({
 						</FormItem>
 					)}
 				/>
-				{chains.map((chain) => (
-					<FormField
-						key={chain}
-						control={form.control}
-						name={`addresses_${chain}` as any}
-						render={({ field }) => (
-							<FormItem>
-								<FormControl>
-									<div
-										className={cn(
-											"w-full flex break-words p-2 gap-2 items-center",
-											isPreview
-												? "divide-x-0"
-												: "divide-x",
-											isPreview && !field.value ? "hidden" : ""
-										)}
-									>
-										<Image src={`https://3xpl.com/3xpl-assets/${chain}/logo_dark.svg`} alt={chain} title={chain} width={24} height={24} />
-										<Input
-											placeholder={`${chain.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase()).replace(' ', '')} address`}
-											{...field}
-											autoFocus
-											className={cn(
-												"border-none text-lg font-medium leading-relaxed focus:ring-1 ring-green-500",
-												isPreview
-													? "w-0 p-0"
-													: "w-full lg:w-1/2"
-											)}
-										/>
+				<div className="p-2">
+					<FormLabel>Campaign content</FormLabel>																
+					{chains.map((chain) => (
+						<FormField
+							key={chain}
+							control={form.control}
+							name={`addresses_${chain}` as any}
+							render={({ field }) => (
+								<FormItem>
+									<FormControl>
 										<div
 											className={cn(
-												"lg:px-10",
-												isPreview
-													? "mx-auto w-full lg:w-4/5 "
-													: " w-1/2 lg:block hidden "
+												"w-full flex break-words p-2 gap-2 items-center divide-x",
 											)}
 										>
-											<h1 className="text-lg font-medium dark:text-gray-200">
-												{(form.getValues() as any)[`addresses_${chain}`]}
-											</h1>
-										</div>
-									</div>
-								</FormControl>
+											<Image src={`https://3xpl.com/3xpl-assets/${chain}/logo_dark.svg`} alt={chain} title={chain} width={24} height={24} />
+											<Input
+												placeholder={`${chain.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase()).replace(' ', '')} address`}
+												{...field}
+												autoFocus
+												className={cn(
+													"border-none text-lg font-medium leading-relaxed focus:ring-1 ring-green-500 w-full lg:w-1/2",
+												)}
+											/>
 
-								{form.getFieldState(`addresses_${chain}` as any).invalid &&
-									(form.getValues() as any)[`addresses_${chain}`] && (
-										<div className="px-2">
-											<FormMessage />
 										</div>
-									)}
-							</FormItem>
-						)}
-					/>
-				))}
+									</FormControl>
+
+									{form.getFieldState(`addresses_${chain}` as any).invalid &&
+										(form.getValues() as any)[`addresses_${chain}`] && (
+											<div className="px-2">
+												<FormMessage />
+											</div>
+										)}
+								</FormItem>
+							)}
+						/>
+					))}
+				</div>		
 			</form>
 		</Form>
 	);

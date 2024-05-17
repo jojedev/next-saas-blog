@@ -36,5 +36,5 @@ export default function EditForm({ campaign }: { campaign: ICampaignDetial }) {
 		}
 	};
 
-	return <CampaignForm onHandleSubmit={onHandleSubmit} defaultCampaign={campaign} />;
+	return <div className="flex justify-center items-center"><CampaignForm onHandleSubmit={onHandleSubmit} defaultCampaign={campaign} /> </div> ;
 }
