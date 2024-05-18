@@ -36,6 +36,7 @@ export default function NavLinks() {
 		<div className="flex items-center gap-5 border-b pb-2">
 			{links.map(({ href, Icon, text }, index) => {
 				return (
+
 					<Link
 						href={href}
 						className={cn(

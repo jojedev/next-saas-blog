@@ -12,6 +12,7 @@ import {
 	FormLabel,
 	FormMessage,
 } from "@/components/ui/form";
+import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import MarkdownPreview from "@/components/markdown/MarkdownPreview";
@@ -29,7 +30,7 @@ import { Switch } from "@/components/ui/switch";
 import { BsSave } from "react-icons/bs";
 import { CampaignFormSchema, CampaignFormSchemaType, SupportedChains } from "../schema";
 import { useUser } from "@/lib/store/user";
-
+import { usePathname } from "next/navigation";
 export default function CampaignForm({
 	onHandleSubmit,
 	defaultCampaign,
@@ -40,6 +41,9 @@ export default function CampaignForm({
 	const [isPending, startTransition] = useTransition();
 	const [isPreview, setPreivew] = useState(false);
 	const user = useUser((state) => state.user);
+	const urlPath: string = usePathname()
+	const campaignId: string = urlPath.substring(urlPath.lastIndexOf("/") + 1)
+	console.log(campaignId)
 
 	const chains = SupportedChains;
 	const form = useForm<z.infer<typeof CampaignFormSchema>>({
@@ -81,28 +85,18 @@ export default function CampaignForm({
 		<Form {...form}>
 			<form
 				onSubmit={form.handleSubmit(onSubmit)}
-				className="w-4/6 justify-center items-center pb-5 rounded-md"
+				className="w-4/6 max-sm:w-full justify-center items-center pb-5 rounded-md"
 			>
 				<div className="flex items-center p-2 sm:justify-between flex-wrap sm:flex-row gap-2">
 					<div
-						className={cn(
-							isPreview
-							? "mx-auto w-full lg:w-4/5 "
-							: " w-1/2 lg:block hidden "
-						)}
 					>
 						<h1 className="text-3xl font-bold dark:text-gray-200">
 							Edit Campaign 
 						</h1>
 					</div>
 					<div className="flex items-center flex-wrap gap-5">
+					<Link href={`/campaign/${campaignId}`}>
 						<span
-							onClick={() => {
-								// setPreivew(
-								// 	!isPreview &&
-								// 		!form.getFieldState("image_url").invalid
-								// );
-							}}
 							role="button"
 							tabIndex={0}
 							className="flex gap-2 items-center border px-3 py-2 rounded-md hover:border-zinc-400 transition-all bg-zinc-800 text-sm"
@@ -112,9 +106,9 @@ export default function CampaignForm({
 									View
 								</>
 						</span>
-					</div>
+					</Link>
 
-					<button
+						<button
 						type="submit"
 						role="button"
 						className={cn(
@@ -126,6 +120,8 @@ export default function CampaignForm({
 						<BsSave className=" animate-bounce group-disabled:animate-none" />
 						Save
 					</button>
+					</div>
+
 				</div>
 				<FormField
 					control={form.control}
