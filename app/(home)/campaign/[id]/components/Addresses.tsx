@@ -48,6 +48,7 @@ export default function Content({ addresses, campaign }: { addresses: any, campa
       let merged: ExplEvent[] = [];
 
       const parsedData = parse3xplData(result);
+      console.log(parsedData)
       for (const { totalRaisedUsd, allEvents } of Object.values(parsedData)) {
         setTotalRaisedUsd((prev) => prev + totalRaisedUsd);
         merged = [...merged, ...allEvents];
@@ -134,6 +135,7 @@ export default function Content({ addresses, campaign }: { addresses: any, campa
       ) : (
         mergedEvents.map((event, index) => {
           return (
+            index < 5 &&
             <div key={`event-${index}`} className="mt-1">
               <div className="flex items-center gap-2">
                 <Image src={`https://3xpl.com/3xpl-assets/${event.chain}/logo_dark.svg`} alt={event.chain} title={event.chain} width={24} height={24} />

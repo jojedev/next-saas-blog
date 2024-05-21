@@ -11,7 +11,7 @@ import { PiTerminalThin } from "react-icons/pi";
 
 export default function MarkdownPreview({
 	content,
-	className = "sm:p-10",
+	className = "",
 }: {
 	content: string;
 	className?: string;
