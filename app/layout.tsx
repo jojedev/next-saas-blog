@@ -42,11 +42,11 @@ export default function RootLayout({
 	return (
 		<html lang="en" suppressHydrationWarning>
 			<body
-				className={cn("antialiased dark:bg-[#09090B]", inter.className)}
+				className={cn("antialiased dark:bg-[#fff]", inter.className)}
 			>
 				<ThemeProvider
 					attribute="class"
-					defaultTheme="dark"
+					defaultTheme="light"
 					enableSystem
 					disableTransitionOnChange
 				>

@@ -12,8 +12,8 @@ export default function Navbar() {
 	return (
 		<nav className="w-full justify-between items-center flex p-5 xl:p-0">
 			<HoverUnderLine>
-				<Link href={"/"} className="font-bold text-2xl">
-					RogerWeb
+				<Link href={"/"} className="font-bold text-2xl text-white">
+					Vercase
 				</Link>
 			</HoverUnderLine>
 			<div className="flex justify-content-between space-x-4">

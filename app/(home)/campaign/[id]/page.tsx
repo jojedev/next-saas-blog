@@ -3,6 +3,8 @@ import { ICampaign } from "@/lib/types";
 import Image from "next/image";
 import Content from "./components/Content";
 import Addresses from "./components/Addresses";
+import { Progress } from "@/components/ui/progress";
+import { ExplData, ExplEvent, parse3xplData } from "./components/3xpl";
 
 export async function generateStaticParams() {
 	try {
@@ -21,7 +23,7 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
 		const { data: campaign } = (await fetch(
 			process.env.SITE_URL + "/api/campaign?id=" + params.id
 		).then((res) => res.json())) as { data: ICampaign };
-		console.log(campaign)
+
 		return {
 			title: campaign?.title,
 			authors: {
@@ -43,8 +45,22 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
 
 export default async function page({ params }: { params: { id: string } }) {
 	const { data: campaign } = (await fetch(
-		process.env.SITE_URL + "/api/campaign?id=" + params.id
+		process.env.SITE_URL + "/api/campaign?id=" + params.id, {
+			cache: 'no-store',
+		  }
 	).then((res) => res.json()).catch(() => ({data: undefined}))) as { data: ICampaign };
+
+	const response = await fetch(process.env.SITE_URL + `/api/crypto?addresses=${encodeURIComponent(JSON.stringify(campaign?.addresses))}`, {
+		next: { revalidate: 1 }
+	  })
+	const result = await response.json();
+	const parsedData:ExplData = parse3xplData(result);
+	console.log(parsedData)
+	let totalRaisedUs: number = 0
+	for (const { totalRaisedUsd} of Object.values(parsedData)) {
+        totalRaisedUs = totalRaisedUsd + totalRaisedUs
+    }
+	console.log(totalRaisedUs)
 
 	if (!campaign?.id) {
 		return <h1 className="text-white">Not found</h1>;
@@ -62,12 +78,7 @@ export default async function page({ params }: { params: { id: string } }) {
 			</div>
 			<div className="flex flex-row gap-20">
 				<div className="flex-col basis-2/3"> 
-					<div className="h-96">
-						<Content campaignId={params.id} />
-					</div>
-				</div>
-				<div className="flex-col basis-1/3"> 
-					<div className="h-125 relative">
+				<div className="h-96 relative aspect-square w-full">
 						<Image
 							priority
 							src={campaign?.image_url!}
@@ -77,6 +88,11 @@ export default async function page({ params }: { params: { id: string } }) {
 							sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
 						/>
 					</div>
+					<div className="h-96">
+						<Content campaignId={params.id} />
+					</div>
+				</div>
+				<div className="flex-col basis-1/3"> 
 					<div className="">
 						<Addresses addresses={campaign?.addresses} campaign={campaign}></Addresses>
 					</div>

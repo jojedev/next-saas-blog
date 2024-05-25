@@ -9,6 +9,10 @@ import { RocketIcon } from "@radix-ui/react-icons";
 import Image from "next/image";
 import { Progress } from "@/components/ui/progress";
 import AddressAlert from "./AddressAlert";
+import {TelegramShareButton, FacebookShareButton} from "react-share";
+
+import { Button } from "@/components/ui/button";
+import { PiTelegramLogo } from "react-icons/pi";
 
 const filterData = (data: ExplData, showZeroBalances: boolean = false): ExplData => {
   return Object.fromEntries(Object.entries(data).map(([chain, { totalRaised, allEvents }]) => {
@@ -38,13 +42,10 @@ export default function Content({ addresses, campaign }: { addresses: any, campa
 
 	useEffect(() => {
     (async () => {
-      const result = await Promise.all(Object.entries(addresses).map(async ([chain, address]: any) => {
-        const response = await fetch(`https://api.3xpl.com/${chain}/address/${address}?data=address,balances,events&from=all&library=currencies,rates(usd)&limit=1000&token=3A0_t3st3xplor3rpub11cb3t4efcd21748a5e`);
-        const data = await response.json();
-        data.data.chain = chain;
-        return data;
-      }));
-
+      const response = await fetch(`/api/crypto?addresses=${encodeURIComponent(JSON.stringify(addresses))}`,{
+        cache: 'no-store',
+        });
+      const result = await response.json();
       let merged: ExplEvent[] = [];
 
       const parsedData = parse3xplData(result);
@@ -77,7 +78,18 @@ export default function Content({ addresses, campaign }: { addresses: any, campa
 	}
 
 	return (
-    <div>
+    <div className="p-8 rounded-xl border-solid border-2 border-gray-100">
+      <Progress value={totalRaisedUsd/campaign.target_usd*100} max={campaign.target_usd} />
+      <div className="w-full"><span className="text-3xl font-semibold">${Math.round(totalRaisedUsd)}</span><span> collected</span></div>
+      <div>Of ${campaign.target_usd} Pledge</div>
+      <br></br>
+      <Button className="w-full h-12 mb-3">Share</Button>
+      <Button className="w-full h-12">Donate</Button>
+      <TelegramShareButton url={"https://www.facebook.com/buy.bitcoin.news/"}>
+        <PiTelegramLogo className="w-9 h-9 m-3" />
+      </TelegramShareButton>
+      
+      
       <div>User is raising funds on following blockcains (click to view address):</div>
       <div className="flex flex-wrap gap-5 justify-center">
         { Object.entries(addresses).map(([chain, address]: any) => (
@@ -86,8 +98,7 @@ export default function Content({ addresses, campaign }: { addresses: any, campa
           </div>
         ))}
       </div>
-      <div>Total raised ${totalRaisedUsd} of ${campaign.target_usd}</div>
-      <Progress value={totalRaisedUsd/campaign.target_usd*100} max={campaign.target_usd} />
+
       <div className="flex justify-between gap-1 border p-2 rounded-md">
         <div className="flex items-center">History</div>
         <div className="flex justify-end">
