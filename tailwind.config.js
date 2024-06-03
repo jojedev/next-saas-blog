@@ -24,6 +24,8 @@ module.exports = {
 				"70vh": "70vh",
 			},
 			colors: {
+				'primaryColor': '#BEFF05',
+				'secondaryColor': '#252525',
 				border: "hsl(var(--border))",
 				input: "hsl(var(--input))",
 				ring: "hsl(var(--ring))",

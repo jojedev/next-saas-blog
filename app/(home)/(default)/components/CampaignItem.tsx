@@ -4,19 +4,15 @@ import Image from "next/image";
 import { ExplData, ExplEvent, parse3xplData } from "../../campaign/[id]/components/3xpl";
 import { useEffect, useState } from "react";
 import { Progress } from "@/components/ui/progress";
+import { getWalletData } from "@/lib/actions/campaign";
 
 export default async function CampaignItem({campaign, index}: {campaign: ICampaign, index:number}) {
-
-    const response = await fetch(process.env.SITE_URL + `/api/crypto?addresses=${encodeURIComponent(JSON.stringify(campaign?.addresses))}`
-)
-	const result = await response.json();
+    const result: any = await getWalletData(campaign.addresses)
 	const parsedData:ExplData = parse3xplData(result);
-	console.log(parsedData)
 	let totalRaisedUs: number = 0
 	for (const { totalRaisedUsd} of Object.values(parsedData)) {
         totalRaisedUs = totalRaisedUsd + totalRaisedUs
     }
-	console.log(totalRaisedUs, 'This is total raised aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
 	return (
 		<>
 			<Link

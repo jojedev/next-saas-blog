@@ -53,3 +53,19 @@ export type Iuser = {
 	stripe_subscription_id: string | null;
 	subscription_status: boolean;
 } | null;
+
+export type ICryptoAddresses = {
+	arbitrumOne?: string;
+	avalanche?: string;
+	bitcoin?: string;
+	bitcoinCash?: string;
+	bnb?: string;
+	cardano?: string;
+	dogecoin?: string;
+	ethereum?: string;
+	litecoin?: string;
+	polygon?: string;
+	solana?: string;
+	ton?: string;
+	tron?: string;
+}

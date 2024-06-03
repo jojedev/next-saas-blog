@@ -9,6 +9,8 @@ import { CampaignFormSchemaType } from "../../../schema";
 import { updateCampaignDetail } from "../../../../../../lib/actions/campaign";
 import { PostgrestSingleResponse } from "@supabase/supabase-js";
 import { redirect, useRouter } from "next/navigation";
+import { revalidatePath } from 'next/cache'
+import { usePathname } from "next/navigation";
 
 export default function EditForm({ campaign }: { campaign: ICampaignDetial }) {
 	const router = useRouter();
@@ -32,9 +34,10 @@ export default function EditForm({ campaign }: { campaign: ICampaignDetial }) {
 			toast({
 				title: "Successfully update 🎉",
 			});
+
 			router.push("/dashboard");
 		}
 	};
 
-	return <div className="flex justify-center items-center"><CampaignForm onHandleSubmit={onHandleSubmit} defaultCampaign={campaign} /> </div> ;
+	return <div className="max-w-7xl mx-auto flex justify-center items-center"><CampaignForm onHandleSubmit={onHandleSubmit} defaultCampaign={campaign} /> </div> ;
 }

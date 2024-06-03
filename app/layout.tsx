@@ -1,13 +1,17 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
+import { Inter, Red_Hat_Display, Roboto } from 'next/font/google'
+import "./globals.scss";
 import { ThemeProvider } from "@/components/theme-provider";
 import { cn } from "@/lib/utils";
 import Navbar from "../components/nav/Navbar";
 import { Toaster } from "@/components/ui/toaster";
 import SessisonProvider from "../components/SessisonProvider";
 
-const inter = Inter({ subsets: ["latin"] });
+const redHatDisplay = Red_Hat_Display({ subsets: ["latin"] });
+const roboto = Roboto({
+	subsets: ["latin"],
+	weight: ["100","300","400","500","700"]
+});
 
 export const metadata: Metadata = {
 	metadataBase: new URL("https://rogerweb.vercel.app/"),
@@ -42,7 +46,7 @@ export default function RootLayout({
 	return (
 		<html lang="en" suppressHydrationWarning>
 			<body
-				className={cn("antialiased dark:bg-[#fff]", inter.className)}
+				className={cn("antialiased dark:bg-[#fff]", redHatDisplay.className, roboto.className)}
 			>
 				<ThemeProvider
 					attribute="class"
@@ -50,7 +54,8 @@ export default function RootLayout({
 					enableSystem
 					disableTransitionOnChange
 				>
-					<main className="max-w-7xl mx-auto lg:py-10 space-y-10 p-5 lg:p-0">
+					{/* max-w-7xl mx-auto  */}
+					<main className="space-y-10 lg:p-0">
 						<Navbar />
 						{children}
 					</main>

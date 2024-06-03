@@ -1,9 +1,10 @@
 "use server";
 
 import { createSupabaseServerClient } from "@/lib/supabase";
-import { ICampaign } from "@/lib/types";
+import { ICampaign, ICryptoAddresses } from "@/lib/types";
 import { revalidatePath, unstable_noStore } from "next/cache";
 import { CampaignFormSchemaType } from "../../app/dashboard/campaign/schema";
+
 
 const DASHBOARD = "/dashboard/campaign";
 
@@ -140,7 +141,7 @@ export async function updateCampaignDetail(
 			.eq("campaign_id", campaignId);
 		revalidatePath(DASHBOARD);
 		revalidatePath("/campaign/" + campaignId);
-
+		console.log(campaignId)
 		return JSON.stringify(result);
 	}
 }
@@ -151,4 +152,20 @@ export async function deleteCampaignById(campaignId: string) {
 	revalidatePath(DASHBOARD);
 	revalidatePath("/campaign/" + campaignId);
 	return JSON.stringify(result);
+}
+
+export async function getWalletData(parsedAddresses: ICryptoAddresses) {
+	try {
+		const result = await Promise.all(Object.entries(parsedAddresses).map(async ([chain, address]: any) => {
+			const response = await fetch(`https://api.3xpl.com/${chain}/address/${address}?data=address,balances,events&from=all&library=currencies,rates(usd)&limit=1000&token=3A0_t3st3xplor3rpub11cb3t4efcd21748a5e`);
+			const data = await response.json();
+			data.data.chain = chain;
+			return data;
+		  }));
+		  return result
+
+	} catch(error) {
+		console.log(error)
+		return error
+	}  
 }

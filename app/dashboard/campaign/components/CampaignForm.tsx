@@ -31,6 +31,7 @@ import { BsSave } from "react-icons/bs";
 import { CampaignFormSchema, CampaignFormSchemaType, SupportedChains } from "../schema";
 import { useUser } from "@/lib/store/user";
 import { usePathname } from "next/navigation";
+import TiptapEditor from '../../../../components/TiptapEditor'
 export default function CampaignForm({
 	onHandleSubmit,
 	defaultCampaign,
@@ -173,13 +174,7 @@ export default function CampaignForm({
 								>	
 									<div className="w-full">
 										<FormLabel>Campaign content</FormLabel>
-										<Textarea
-											placeholder="Campaign content"
-											{...field}
-											className={cn(
-												"border-none text-lg font-medium leading-relaxed focus:ring-1 ring-gray-500  h-64 resize-none w-full",
-											)}
-										/>
+										<TiptapEditor {...field} />
 										</div>
 								</div>
 							</FormControl>

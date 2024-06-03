@@ -67,7 +67,7 @@ export default async function Login({
             required>
           </Input>
 
-          <Button className="bg-indigo-700 rounded-md px-4 py-2 text-foreground mb-2">
+          <Button className="bg-primaryColor rounded-md px-4 py-2 text-foreground mb-2">
             Sign In
           </Button>
 

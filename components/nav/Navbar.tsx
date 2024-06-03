@@ -10,7 +10,7 @@ export default function Navbar() {
 	const user = useUser((state) => state.user);
 
 	return (
-		<nav className="w-full justify-between items-center flex p-5 xl:p-0">
+		<nav className="max-w-7xl mx-auto w-full justify-between items-center flex p-5 xl:p-0 h-[100px]">
 			<HoverUnderLine>
 				<Link href={"/"} className="font-bold text-2xl text-white">
 					Vercase

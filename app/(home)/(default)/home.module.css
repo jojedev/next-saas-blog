@@ -9,11 +9,14 @@
     left: 0;
 }
 
-.contents {
-    text-transform: uppercase;
-    color: white;
-    letter-spacing: 1.5rem;
-    font-weight: 500;
-    padding: 2rem 0;
-    font-size: 2rem;
+.firstDivHome {
+    margin-top: -100px !important;
 }
+
+
+.noTop {
+    margin-top: 0px !important;
+}
+
+
+

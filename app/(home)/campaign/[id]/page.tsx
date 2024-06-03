@@ -50,24 +50,23 @@ export default async function page({ params }: { params: { id: string } }) {
 		  }
 	).then((res) => res.json()).catch(() => ({data: undefined}))) as { data: ICampaign };
 
-	const response = await fetch(process.env.SITE_URL + `/api/crypto?addresses=${encodeURIComponent(JSON.stringify(campaign?.addresses))}`, {
-		next: { revalidate: 1 }
-	  })
+	const response = await fetch(process.env.SITE_URL + `/api/crypto?addresses=${encodeURIComponent(JSON.stringify(campaign?.addresses))}`
+)
 	const result = await response.json();
 	const parsedData:ExplData = parse3xplData(result);
-	console.log(parsedData)
+
 	let totalRaisedUs: number = 0
 	for (const { totalRaisedUsd} of Object.values(parsedData)) {
         totalRaisedUs = totalRaisedUsd + totalRaisedUs
     }
-	console.log(totalRaisedUs)
+
 
 	if (!campaign?.id) {
 		return <h1 className="text-white">Not found</h1>;
 	}
 
 	return (
-		<div className="mx-auto min-h-screen  pt-10 space-y-10">
+		<div className="max-w-7xl mx-auto flex-col mx-auto min-h-screen  pt-10 space-y-10">
 			<div className="space-y-5">
 				<h1 className=" text-3xl font-bold dark:text-gray-200">
 					{campaign?.title}

@@ -1,0 +1,8 @@
+.embla__container {
+    display: flex;
+}
+
+.embla_slide {
+    flex: 0 0 33%;
+    min-width: 0px;
+}

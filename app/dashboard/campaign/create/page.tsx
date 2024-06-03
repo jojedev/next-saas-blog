@@ -35,7 +35,7 @@ export default function CreateForm() {
 	};
 
 	return (
-		<div className="flex justify-center items-center">
+		<div className="max-w-7xl mx-auto flex justify-center items-center">
 			<CampaignForm
 				onHandleSubmit={onHandleSubmit}
 				defaultCampaign={defaultCreateCampaign}

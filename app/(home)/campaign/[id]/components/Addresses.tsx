@@ -10,6 +10,8 @@ import Image from "next/image";
 import { Progress } from "@/components/ui/progress";
 import AddressAlert from "./AddressAlert";
 import {TelegramShareButton, FacebookShareButton} from "react-share";
+import { getWalletData } from "@/lib/actions/campaign";
+import { ICryptoAddresses } from "@/lib/types";
 
 import { Button } from "@/components/ui/button";
 import { PiTelegramLogo } from "react-icons/pi";
@@ -30,7 +32,7 @@ const filterEvents = (events: ExplEvent[], showZeroBalances: boolean = false): E
   return showZeroBalances ? events : events.filter(({ amountUsd }) => amountUsd > 0);
 }
 
-export default function Content({ addresses, campaign }: { addresses: any, campaign: ICampaign }) {
+export default function Content({ addresses, campaign }: { addresses: ICryptoAddresses, campaign: ICampaign }) {
 	const [loading, setLoading] = useState(true);
   const [totalRaisedUsd, setTotalRaisedUsd] = useState(0);
   const [rawData, setRawData] = useState<ExplData>({});
@@ -42,19 +44,13 @@ export default function Content({ addresses, campaign }: { addresses: any, campa
 
 	useEffect(() => {
     (async () => {
-      const response = await fetch(`/api/crypto?addresses=${encodeURIComponent(JSON.stringify(addresses))}`,{
-        cache: 'no-store',
-        });
-      const result = await response.json();
       let merged: ExplEvent[] = [];
-
-      const parsedData = parse3xplData(result);
-      console.log(parsedData)
+      const resultResponse: any = await getWalletData(addresses)
+      const parsedData = parse3xplData(resultResponse);
       for (const { totalRaisedUsd, allEvents } of Object.values(parsedData)) {
         setTotalRaisedUsd((prev) => prev + totalRaisedUsd);
         merged = [...merged, ...allEvents];
       }
-
       setRawData(parsedData);
       setFilteredData(filterData(parsedData, showZeroBalances));
 
@@ -64,7 +60,6 @@ export default function Content({ addresses, campaign }: { addresses: any, campa
 
       setLoading(false);
     })();
-
 		// eslint-disable-next-line
 	}, []);
 
@@ -76,7 +71,7 @@ export default function Content({ addresses, campaign }: { addresses: any, campa
 	if (loading) {
 		return <CampaignContentLoading />;
 	}
-
+  console.log(totalRaisedUsd)
 	return (
     <div className="p-8 rounded-xl border-solid border-2 border-gray-100">
       <Progress value={totalRaisedUsd/campaign.target_usd*100} max={campaign.target_usd} />

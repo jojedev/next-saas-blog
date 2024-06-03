@@ -33,7 +33,7 @@ export default function NavLinks() {
 	];
 
 	return (
-		<div className="flex items-center gap-5 border-b pb-2">
+		<div className="max-w-7xl mx-auto flex items-center gap-5 border-b pb-2">
 			{links.map(({ href, Icon, text }, index) => {
 				return (
 
