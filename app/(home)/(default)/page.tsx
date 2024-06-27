@@ -31,14 +31,14 @@ export default async function Home() {
 		<>
 			<div className={`flex flex-col items-center justify-center h-[100vh] ${styles.firstDivHome}`}>
 				<div className="p-5">
-					<h1 className="uppercase text-[white] font-medium px-[0] py-8 text-[3rem] md:text-[5rem] max-w-[500px] tracking-[4px] leading-[0.9]">SPEAK OUT YOUR MIND ABOUT IT</h1>
+					<h1 className="uppercase text-[white] font-medium px-[0] py-8 text-[3rem] md:text-[5rem] max-w-[500px] leading-[0.9]">SPEAK OUT YOUR MIND ABOUT IT</h1>
 					<div className="w-24 h-[6px] bg-primaryColor mb-5"></div>
 					<span className="text-xl block text-white font-light max-w-[380px]">cryptocurrency advocate, unfairly arrested; highlights challenges in legal landscape for blockchain pioneers.</span>
 				</div>
 			</div>
 			<video src={require('../../../public/CryptoJesus.webm')} autoPlay muted loop className={styles.video}/>
 			<div className={`${styles.noTop} bg-secondaryColor h-[640px]`}>
-				<h2 className="uppercase text-[white] px-5 font-medium text-[2.5rem] sm:text-[4rem] max-w-[500px] tracking-[4px] leading-[0.9] md:left-[10%] relative top-[70px] z-10">COMMUNITY SHOWING SUPPORT</h2>
+				<h2 className="uppercase text-[white] px-5 font-medium text-[2.5rem] sm:text-[4rem] max-w-[500px] leading-[0.9] md:left-[10%] relative top-[70px] z-10">COMMUNITY SHOWING SUPPORT</h2>
 				<EmblaCarousel slides={SLIDES} testimonials={testimonials} ></EmblaCarousel>
 			</div>
 			<div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-center md:space-x-6 p-8 border-b-[1px_solid_#fff]">

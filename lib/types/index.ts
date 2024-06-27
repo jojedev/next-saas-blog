@@ -24,6 +24,7 @@ export type ICampaignDetial = {
 		created_at: string;
 	};
 	addresses: any;
+	addresses_order: string[];
 	target_usd: number;
 	user_id: string;
 } | null;

@@ -47,8 +47,7 @@ export default function DeleteAlert({ id, disabled }: { id: string, disabled: bo
 	return (
 		<AlertDialog>
 			<AlertDialogTrigger asChild>
-				<Button disabled={disabled} className="flex gap-2 items-center" variant="outline">
-					<TrashIcon />
+				<Button disabled={disabled} className="flex gap-2 items-center min-w-32" variant="outline">
 					Delete
 				</Button>
 			</AlertDialogTrigger>

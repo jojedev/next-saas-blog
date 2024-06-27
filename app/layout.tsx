@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import Navbar from "../components/nav/Navbar";
 import { Toaster } from "@/components/ui/toaster";
 import SessisonProvider from "../components/SessisonProvider";
+import Footer from "@/components/Footer/Footer";
 
 const redHatDisplay = Red_Hat_Display({ subsets: ["latin"] });
 const roboto = Roboto({
@@ -44,9 +45,9 @@ export default function RootLayout({
 	children: React.ReactNode;
 }) {
 	return (
-		<html lang="en" suppressHydrationWarning>
+		<html lang="en" suppressHydrationWarning className={cn("antialiased dark:bg-[#fff]", redHatDisplay.className, roboto.className)}>
 			<body
-				className={cn("antialiased dark:bg-[#fff]", redHatDisplay.className, roboto.className)}
+				className={cn("antialiased dark:bg-[#fff]")}
 			>
 				<ThemeProvider
 					attribute="class"
@@ -55,12 +56,13 @@ export default function RootLayout({
 					disableTransitionOnChange
 				>
 					{/* max-w-7xl mx-auto  */}
-					<main className="space-y-10 lg:p-0">
+					<main className="space-y-10 lg:p-0 min-h-screen">
 						<Navbar />
 						{children}
 					</main>
 				</ThemeProvider>
 				<Toaster />
+				<Footer />
 				<SessisonProvider />
 			</body>
 		</html>

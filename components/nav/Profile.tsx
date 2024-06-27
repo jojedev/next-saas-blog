@@ -24,13 +24,16 @@ export default function Profile() {
 	return (
 		<Popover>
 			<PopoverTrigger>
-				<Image
-					src={user?.image_url!}
-					alt={user?.display_name!}
-					width={50}
-					height={50}
-					className="rounded-full ring-2 ring-green-500"
-				/>
+				<div className="px-3 py-2 shadow-md rounded-lg">
+					<Image
+						src={user?.image_url!}
+						alt={user?.display_name!}
+						width={35}
+						height={35}
+						className="rounded-full mr-2  inline-block "
+					/>
+					<span className="font-bold inline-block">User</span>
+				</div>
 			</PopoverTrigger>
 			<PopoverContent className="space-y-3 divide-y p-2" side="bottom">
 				<div className="px-4">

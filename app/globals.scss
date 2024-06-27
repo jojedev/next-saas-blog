@@ -86,21 +86,24 @@
   min-width: 0;
 }
 
-html,body,span,div {
+html,body,span,div,p,li,ul,ol {
   font-family: var(--font-roboto);
 }
  
 h1,h2,h3,h4,h5,h6 {
   font-family: var(--font-red_hat_display);
+  transform: scale(1, 0.90);
 }
 /* Basic editor styles */
 .tiptap {
+  outline: none;
   > * + * {
     margin-top: 0.75em;
   }
   ul,
   ol {
     padding: 0 1rem;
+    list-style: circle;
   }
 
 
@@ -141,3 +144,12 @@ h1,h2,h3,h4,h5,h6 {
   }
 }
 
+main ul,
+main ol {
+  padding: 0 1rem;
+  list-style: circle;
+}
+
+.Dropdown-option.eraseItem {
+  display: none !important;
+}

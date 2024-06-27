@@ -24,7 +24,7 @@ import {
 	RocketIcon,
 	StarIcon,
 } from "@radix-ui/react-icons";
-import { ReactNode, useState, useTransition } from "react";
+import { MutableRefObject, ReactNode, Ref, useEffect, useRef, useState, useTransition } from "react";
 import { ICampaignDetial, ICampaignForm } from "@/lib/types";
 import { Switch } from "@/components/ui/switch";
 import { BsSave } from "react-icons/bs";
@@ -32,6 +32,9 @@ import { CampaignFormSchema, CampaignFormSchemaType, SupportedChains } from "../
 import { useUser } from "@/lib/store/user";
 import { usePathname } from "next/navigation";
 import TiptapEditor from '../../../../components/TiptapEditor'
+import Dropdown from 'react-dropdown';
+import 'react-dropdown/style.css';
+import { Button } from "@/RogerVer/components/ui/button";
 export default function CampaignForm({
 	onHandleSubmit,
 	defaultCampaign,
@@ -44,9 +47,9 @@ export default function CampaignForm({
 	const user = useUser((state) => state.user);
 	const urlPath: string = usePathname()
 	const campaignId: string = urlPath.substring(urlPath.lastIndexOf("/") + 1)
-	console.log(campaignId)
-
 	const chains = SupportedChains;
+	const dropdownRef:any = useRef(null);
+	const [activeAddresses, setActiveAddreses] = useState<string[]>([]);
 	const form = useForm<z.infer<typeof CampaignFormSchema>>({
 		mode: "all",
 		resolver: zodResolver(CampaignFormSchema),
@@ -82,11 +85,58 @@ export default function CampaignForm({
 		});
 	};
 
+	const handleDropdownChange = (event: any) => {
+		event.preventDefault()
+		let activeChains: string[] = [...activeAddresses];
+		const allOptions: string[] = [...chains]
+		const selectedChain: string = dropdownRef.current.state.selected.value
+		if (!selectedChain) return
+
+		const selectedIndex = allOptions.findIndex((chain)=> { if (selectedChain === chain) return true })
+
+		activeChains.unshift(selectedChain);
+		console.log(activeChains)
+		setActiveAddreses(activeChains);
+
+ 		// console.log('Selected option:',  activeAddreses,  selectedChain);
+	  };
+	  const deleteChain = (event: any, chain: string) => {
+		event.preventDefault()
+		form.setValue(`addresses_${chain}`, '');
+		let activeChains: string[] = [...activeAddresses];
+		const selectedIndex = activeChains.findIndex((selectedChain)=> {if (selectedChain === chain) return true})
+		activeChains.splice(selectedIndex, 1, '');
+		setActiveAddreses(activeChains);
+	  }
+	  const svgOptions = chains.map((chain) => ({
+		svg: <Image className="inline-block mr-2" src={`https://3xpl.com/3xpl-assets/${chain}/logo_dark.svg`} alt={chain} title={chain} width={24} height={24} />,
+		label: <span>{`${chain.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase()).replace(' ', '')} address`}</span>,
+	  }));
+
+	  const dropdownOptions = svgOptions.map((option, index) => ({
+		label: (
+		  <div>
+			{option.svg}
+			{option.label}
+		  </div>
+		),
+		value: chains[index],
+		className: `${activeAddresses[index] ? 'eraseItem' : 'block'}`,
+	  }));
+
+	useEffect(() => {
+		const addresses = chains.map((chain) => {
+			const addressValues = form.getValues(`addresses_${chain}` as any);
+			return addressValues ? chain : '';
+		  });
+		setActiveAddreses(addresses);
+	}, []);
+	console.log(activeAddresses)
 	return (
 		<Form {...form}>
 			<form
 				onSubmit={form.handleSubmit(onSubmit)}
-				className="w-4/6 max-sm:w-full justify-center items-center pb-5 rounded-md"
+				className="w-4/6 max-sm:w-full justify-center items-center pb-5 rounded-lg"
 			>
 				<div className="flex items-center p-2 sm:justify-between flex-wrap sm:flex-row gap-2">
 					<div
@@ -100,10 +150,10 @@ export default function CampaignForm({
 						<span
 							role="button"
 							tabIndex={0}
-							className="flex gap-2 items-center border px-3 py-2 rounded-md hover:border-zinc-400 transition-all bg-zinc-800 text-sm"
+							className="flex bg-primaryColor gap-2 items-center font-bold px-3 py-2 rounded-lg hover:border-zinc-400 transition-all text-sm"
 						>
 								<>
-									<EyeOpenIcon />
+									{/* <EyeOpenIcon /> */}
 									View
 								</>
 						</span>
@@ -113,12 +163,12 @@ export default function CampaignForm({
 						type="submit"
 						role="button"
 						className={cn(
-							"flex gap-2 items-center border px-3 py-2 rounded-md border-green-500 disabled:border-gray-800  bg-zinc-800 transition-all group text-sm disabled:bg-gray-900",
+							"flex bg-primaryColor gap-2 items-center  font-bold px-3 py-2 rounded-lg disabled:border-gray-800  transition-all group text-sm disabled:bg-gray-900",
 							{ "animate-spin": isPending }
 						)}
 						disabled={!form.formState.isValid}
 					>
-						<BsSave className=" animate-bounce group-disabled:animate-none" />
+						{/* <BsSave className=" animate-bounce group-disabled:animate-none" /> */}
 						Save
 					</button>
 					</div>
@@ -143,7 +193,7 @@ export default function CampaignForm({
 												{...field}
 												autoFocus
 												className={cn(
-													"border-none text-lg font-medium leading-relaxed focus:ring-1 ring-green-500 w-full",
+													"py-5 px-2 border border-gray-200 rounded-lg text-lg font-medium leading-relaxed",
 												)}
 											/>
 										</div>
@@ -169,10 +219,10 @@ export default function CampaignForm({
 							<FormControl>
 								<div
 									className={cn(
-										"w-full flex p-2 divide-x-0",
+										"w-full flex divide-x-0",
 									)}
 								>	
-									<div className="w-full">
+									<div className="w-full p-2">
 										<FormLabel>Campaign content</FormLabel>
 										<TiptapEditor {...field} />
 										</div>
@@ -203,7 +253,7 @@ export default function CampaignForm({
 												placeholder="🔗 Image url"
 												{...field}
 												className={cn(
-													"border-none text-lg font-medium leading-relaxed focus:ring-1 ring-green-500 w-full lg:w-1/2 ",
+													"py-5 px-2 border border-gray-200 rounded-lg text-lg font-medium leading-relaxed",
 												)}
 												type="url"
 											/>
@@ -245,7 +295,7 @@ export default function CampaignForm({
 											{...field}
 											autoFocus
 											className={cn(
-												"border-none text-lg font-medium leading-relaxed focus:ring-1 ring-green-500 w-full lg:w-1/2",
+												"py-5 px-2 border border-gray-200 rounded-lg text-lg font-medium leading-relaxed",
 											)}
 										/>
 										</div>
@@ -262,34 +312,47 @@ export default function CampaignForm({
 						</FormItem>
 					)}
 				/>
-				<div className="p-2">
-					<FormLabel>Campaign content</FormLabel>																
-					{chains.map((chain) => (
+				<div className="p-2 max-w-xl">
+					<FormLabel>Addresses</FormLabel>	
+					<div className="flex justify-start items-center w-full mb-5">
+						<Dropdown controlClassName="py-5 px-2 border !border-gray-200 !rounded-lg shadow-sm" className="inline-block mr-2 w-full " ref={dropdownRef} options={dropdownOptions}  placeholder="Select an option" />	
+						<Button className="inline-block" onClick={handleDropdownChange}>New Wallet</Button>				
+					</div>
+							
+					{activeAddresses.map((chain, index) => (
 						<FormField
-							key={chain}
+							key={activeAddresses[index]}
 							control={form.control}
-							name={`addresses_${chain}` as any}
+							name={`addresses_${activeAddresses[index]}` as any}
 							render={({ field }) => (
 								<FormItem>
 									<FormControl>
+									{activeAddresses[index]   ? (
 										<div
 											className={cn(
-												"w-full flex break-words p-2 gap-2 items-center divide-x",
+											"w-full break-words gap-2 items-center ",
 											)}
 										>
-											<Image src={`https://3xpl.com/3xpl-assets/${chain}/logo_dark.svg`} alt={chain} title={chain} width={24} height={24} />
-											<Input
+											<div className="flex my-2">
+												<Image className="mr-2" src={`https://3xpl.com/3xpl-assets/${chain}/logo_dark.svg`} alt={chain} title={chain} width={24} height={24} />
+												<label className="font-medium">{`${chain.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase()).replace(' ', '')} address`}</label>
+											</div>
+											<div className="w-full flex break-words mb-5  gap-2 items-center divide-x">
+												<Input
 												placeholder={`${chain.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase()).replace(' ', '')} address`}
 												{...field}
 												autoFocus
 												className={cn(
-													"border-none text-lg font-medium leading-relaxed focus:ring-1 ring-green-500 w-full lg:w-1/2",
+													"py-5 px-2 border border-gray-200 rounded-lg text-lg  leading-relaxed",
 												)}
-											/>
+												/>
+												<Button className="rounded-full text-3xl w-10 h-10" onClick={(e)=> deleteChain(e, chain)}>-</Button>
+											</div>
 
 										</div>
+										): null
+									}
 									</FormControl>
-
 									{form.getFieldState(`addresses_${chain}` as any).invalid &&
 										(form.getValues() as any)[`addresses_${chain}`] && (
 											<div className="px-2">

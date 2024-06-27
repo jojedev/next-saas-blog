@@ -9,7 +9,7 @@ import { RocketIcon } from "@radix-ui/react-icons";
 import Image from "next/image";
 import { Progress } from "@/components/ui/progress";
 import AddressAlert from "./AddressAlert";
-import {TelegramShareButton, FacebookShareButton} from "react-share";
+import {TelegramShareButton} from "react-share";
 import { getWalletData } from "@/lib/actions/campaign";
 import { ICryptoAddresses } from "@/lib/types";
 

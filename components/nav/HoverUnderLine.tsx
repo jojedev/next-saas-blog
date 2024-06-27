@@ -3,7 +3,7 @@ import React, { ReactNode } from "react";
 
 export default function HoverUnderLine({
 	children,
-	className = "bg-green-500",
+	className = "bg-primaryColor",
 }: {
 	children: ReactNode;
 	className?: string;
