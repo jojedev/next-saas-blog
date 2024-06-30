@@ -5,7 +5,7 @@ import { Database } from '@/lib/types/supabase';
 export async function GET(request: Request) {
 	const supabase = createClient<Database>(
 		process.env.NEXT_PUBLIC_SUPABASE_URL!,
-		process.env.SERVICE_ROLE_SUPABASE_ANON_KEY!
+		process.env.SERVICE_ROLE!
 	);
 
   const { searchParams } = new URL(request.url);

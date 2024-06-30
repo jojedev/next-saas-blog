@@ -66,7 +66,7 @@ export default async function page({ params }: { params: { id: string } }) {
 	}
 
 	return (
-		<div className="max-w-7xl mx-auto flex-col mx-auto min-h-screen  pt-10 space-y-10">
+		<div className="max-w-7xl mx-auto flex-col min-h-screen  pt-10 space-y-10">
 			<div className="space-y-5">
 				<h1 className=" text-3xl font-bold dark:text-gray-200">
 					{campaign?.title}

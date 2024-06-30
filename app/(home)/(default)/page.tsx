@@ -30,14 +30,16 @@ export default async function Home() {
 	return (
 		<>
 			<div className={`flex flex-col items-center justify-center h-[100vh] ${styles.firstDivHome}`}>
-				<div className="p-5">
+				<div className="p-5 lg:ml-[20%]">
 					<h1 className="uppercase text-[white] font-medium px-[0] py-8 text-[3rem] md:text-[5rem] max-w-[500px] leading-[0.9]">SPEAK OUT YOUR MIND ABOUT IT</h1>
 					<div className="w-24 h-[6px] bg-primaryColor mb-5"></div>
 					<span className="text-xl block text-white font-light max-w-[380px]">cryptocurrency advocate, unfairly arrested; highlights challenges in legal landscape for blockchain pioneers.</span>
 				</div>
 			</div>
-			<video src={require('../../../public/CryptoJesus.webm')} autoPlay muted loop className={styles.video}/>
+			<Image className={styles.video} src={require('../../../public/Rogerbackground.jpg')} fill alt={"Roger ver"}></Image>
+			{/* <video src={require('../../../public/Rogerbackground.jpg')} autoPlay muted loop className={styles.video}/> */}
 			<div className={`${styles.noTop} bg-secondaryColor h-[640px]`}>
+				<Image src={require('../../../public/Rectangle.svg')} width={300} height={300} alt={"Roger ver"}></Image>
 				<h2 className="uppercase text-[white] px-5 font-medium text-[2.5rem] sm:text-[4rem] max-w-[500px] leading-[0.9] md:left-[10%] relative top-[70px] z-10">COMMUNITY SHOWING SUPPORT</h2>
 				<EmblaCarousel slides={SLIDES} testimonials={testimonials} ></EmblaCarousel>
 			</div>
@@ -58,6 +60,12 @@ export default async function Home() {
 			{/* <div className={`max-w-7xl mx-auto mx-5 w-[90%] h-[2px] bg-green mb-5${styles.noTop}`}></div> */}
 			<div className="max-w-7xl mx-auto w-full grid grid-cols-1 md:grid-cols-3 gap-5 p-5 xl:p-0">
 				<CampaignLoop campaigns={campaigns}></CampaignLoop>
+			</div>
+			<div>
+				<div className={`${styles.noTop} bg-example h-[540px]`}>
+					<Image src={require('../../../public/RectangleTestimonialsHome.png')} width={50} height={50} alt={"Roger ver"}></Image>
+					<h2 className="uppercase text-secondaryColor px-5 font-medium text-[2.5rem] sm:text-8xl max-w-[400px] leading-[0.9] md:left-[10%] relative top-[70px] z-10">CREATE SHARE SUPPORT</h2>
+				</div>
 			</div>
 		</>
 	);
